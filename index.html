@@ -3,62 +3,1300 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Perfil</title>
-<link rel="stylesheet" href="style.css">
+<title>Nexia Marketing · Tráfego · Automação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --black:     #050608;
+  --navy:      #080C18;
+  --navy2:     #0C1220;
+  --navy3:     #111827;
+  --gold:      #C9A84C;
+  --gold2:     #E2C166;
+  --gold3:     #F5DFA0;
+  --gold-dim:  rgba(201,168,76,0.15);
+  --gold-line: rgba(201,168,76,0.25);
+  --white:     #FFFFFF;
+  --white-80:  rgba(255,255,255,0.80);
+  --white-50:  rgba(255,255,255,0.50);
+  --white-20:  rgba(255,255,255,0.20);
+  --white-08:  rgba(255,255,255,0.08);
+  --white-04:  rgba(255,255,255,0.04);
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body:    'Outfit', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+ 
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.6;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+ 
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.gold { color: var(--gold); }
+.gold2 { color: var(--gold2); }
+.muted { color: var(--white-50); }
+.mono { font-family: var(--font-mono); }
+.display { font-family: var(--font-display); }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+.reveal-delay-4 { transition-delay: .4s; }
+ 
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: .85rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .85rem 2rem;
+  border-radius: 2px;
+  transition: background .2s, transform .2s;
+}
+.btn-gold:hover { background: var(--gold2); transform: translateY(-1px); }
+ 
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: .85rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .85rem 2rem;
+  border: 1px solid var(--white-20);
+  border-radius: 2px;
+  transition: border-color .2s, color .2s, transform .2s;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
+ 
+/* ============================================================
+   NAV
+   ============================================================ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 6%;
+  background: rgba(5,6,8,.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gold-line);
+}
+.nav-logo { display: flex; align-items: center; }
+.nav-logo svg { display: block; }
+.nav-logo span { color: var(--gold); }
+.nav-links {
+  display: flex; gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--white-80);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--gold);
+  padding: .55rem 1.4rem;
+  border-radius: 2px;
+  transition: background .2s;
+}
+.nav-cta:hover { background: var(--gold2); }
+ 
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 9rem 6% 6rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,168,76,.07) 0%, transparent 60%),
+              radial-gradient(ellipse 50% 40% at 10% 80%, rgba(201,168,76,.04) 0%, transparent 60%);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+.hero-inner {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 1200px;
+}
+.hero-chip {
+  display: inline-flex; align-items: center; gap: .5rem;
+  border: 1px solid var(--gold-line);
+  padding: .35rem .9rem;
+  border-radius: 2px;
+  font-size: .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.75rem;
+}
+.hero-chip-dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+ 
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+  margin-bottom: 1.5rem;
+}
+.hero h1 .strike {
+  text-decoration: line-through;
+  color: var(--white-50);
+  font-style: italic;
+}
+.hero h1 .shine {
+  background: linear-gradient(135deg, var(--gold3) 0%, var(--gold) 50%, var(--gold2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-lede {
+  font-size: 1.05rem;
+  color: var(--white-80);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 2.25rem;
+  text-wrap: pretty;
+}
+.hero-ctas {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.hero-kpis {
+  display: flex; gap: 2rem;
+  border-top: 1px solid var(--white-08);
+  padding-top: 2rem;
+}
+.kpi-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+}
+.kpi-label {
+  font-size: .75rem;
+  color: var(--white-50);
+  margin-top: .3rem;
+  letter-spacing: .04em;
+  line-height: 1.4;
+}
+ 
+/* hero visual */
+.hero-visual {
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-orb {
+  width: 380px; height: 380px;
+  position: relative;
+}
+.orb-ring {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--gold-line);
+  animation: spin 20s linear infinite;
+}
+.orb-ring:nth-child(2) {
+  inset: 20px;
+  border-color: rgba(201,168,76,.1);
+  animation-duration: 14s;
+  animation-direction: reverse;
+}
+.orb-ring:nth-child(3) {
+  inset: 50px;
+  border-color: rgba(201,168,76,.08);
+  animation-duration: 9s;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.orb-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(201,168,76,.18) 0%, rgba(201,168,76,.04) 60%, transparent 100%);
+  border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: .5rem;
+}
+.orb-logo-text {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: .3em;
+  color: var(--gold);
+}
+.orb-tagline {
+  font-size: .6rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--white-50);
+  text-align: center;
+}
+.orb-dot {
+  position: absolute;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold);
+}
+.orb-dot:nth-child(1) { top: 10px; left: 50%; transform: translateX(-50%); }
+.orb-dot:nth-child(2) { bottom: 10px; left: 50%; transform: translateX(-50%); }
+.orb-dot:nth-child(3) { left: 10px; top: 50%; transform: translateY(-50%); }
+.orb-dot:nth-child(4) { right: 10px; top: 50%; transform: translateY(-50%); }
+ 
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.marquee-wrap {
+  border-top: 1px solid var(--gold-line);
+  border-bottom: 1px solid var(--gold-line);
+  background: rgba(201,168,76,.04);
+  padding: 1rem 0;
+  overflow: hidden;
+}
+.marquee-track {
+  display: flex; gap: 0;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee-item {
+  display: flex; align-items: center; gap: 1.5rem;
+  padding: 0 2rem;
+  font-size: .72rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--white-50);
+  white-space: nowrap;
+}
+.marquee-item .dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; }
+ 
+/* ============================================================
+   SECTION BASE
+   ============================================================ */
+section { padding: 6rem 6%; }
+.section-eyebrow {
+  font-size: .68rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .75rem;
+  font-family: var(--font-mono);
+}
+.section-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 600;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.section-sub {
+  font-size: 1rem;
+  color: var(--white-50);
+  line-height: 1.75;
+  max-width: 540px;
+  margin-top: 1rem;
+  text-wrap: pretty;
+}
+ 
+/* ============================================================
+   TESE
+   ============================================================ */
+.tese { background: var(--navy); }
+.tese-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+.tese-points { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.tese-point {
+  display: flex; gap: 1.25rem;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--gold-dim);
+}
+.tese-point-num {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--gold);
+  flex-shrink: 0;
+  padding-top: .15rem;
+}
+.tese-point-title { font-weight: 500; font-size: .95rem; margin-bottom: .25rem; }
+.tese-point-body { font-size: .88rem; color: var(--white-50); line-height: 1.7; }
+ 
+/* chart */
+.tese-chart {
+  background: var(--navy2);
+  border: 1px solid var(--gold-line);
+  border-radius: 4px;
+  padding: 2rem;
+}
+.chart-title {
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--white-50);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-mono);
+}
+.chart-svg { width: 100%; height: 200px; }
+ 
+/* ============================================================
+   ARGUMENTS
+   ============================================================ */
+.args { background: var(--black); }
+.args-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 1.5px;
+  background: var(--gold-line);
+  border: 1px solid var(--gold-line);
+  margin-top: 3rem;
+}
+.arg-card {
+  background: var(--black);
+  padding: 2.25rem 2rem;
+  transition: background .3s;
+  position: relative;
+  overflow: hidden;
+}
+.arg-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s var(--ease);
+}
+.arg-card:hover { background: var(--navy2); }
+.arg-card:hover::after { transform: scaleX(1); }
+.arg-num {
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  color: var(--gold);
+  letter-spacing: .15em;
+  margin-bottom: 1.25rem;
+  opacity: .6;
+}
+.arg-headline { font-weight: 600; font-size: 1rem; margin-bottom: .5rem; line-height: 1.3; }
+.arg-lede { font-size: .88rem; color: var(--white-50); margin-bottom: .75rem; font-style: italic; }
+.arg-body { font-size: .85rem; color: var(--white-50); line-height: 1.7; margin-bottom: 1.25rem; }
+.arg-stat { font-family: var(--font-display); font-size: 2rem; font-weight: 600; color: var(--gold); }
+.arg-stat-label { font-size: .72rem; color: var(--white-50); margin-top: .2rem; }
+ 
+/* ============================================================
+   PULL BAND
+   ============================================================ */
+.pull-band {
+  background: var(--gold);
+  padding: 2.5rem 6%;
+  text-align: center;
+}
+.pull-band p {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 600;
+  color: var(--black);
+  text-wrap: balance;
+}
+ 
+/* ============================================================
+   WHY NOW
+   ============================================================ */
+.why-now { background: var(--navy); }
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.why-card {
+  background: var(--navy2);
+  border: 1px solid var(--gold-line);
+  padding: 2rem;
+  border-radius: 2px;
+  position: relative;
+}
+.why-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.why-icon {
+  width: 40px; height: 40px;
+  border: 1px solid var(--gold-line);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.why-icon svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+.why-card h3 { font-weight: 600; font-size: .95rem; margin-bottom: .6rem; }
+.why-card p { font-size: .85rem; color: var(--white-50); line-height: 1.7; }
+ 
+/* ============================================================
+   BEFORE / AFTER
+   ============================================================ */
+.before-after { background: var(--black); }
+.ba-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+.ba-col h3 {
+  font-size: .72rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  padding-bottom: .75rem;
+  border-bottom: 1px solid var(--white-08);
+}
+.ba-col.after h3 { color: var(--gold); border-color: var(--gold-line); }
+.ba-col.before h3 { color: var(--white-50); }
+.ba-bar-wrap { display: flex; flex-direction: column; gap: 1.25rem; }
+.ba-bar-label {
+  display: flex; justify-content: space-between;
+  font-size: .82rem;
+  color: var(--white-80);
+  margin-bottom: .4rem;
+}
+.ba-bar-track {
+  height: 6px;
+  background: var(--white-08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.ba-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  width: 0%;
+  transition: width 1.2s var(--ease);
+}
+.ba-col.before .ba-bar-fill { background: var(--white-20); }
+.ba-col.after .ba-bar-fill { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
+ 
+/* ============================================================
+   SERVICOS
+   ============================================================ */
+.servicos { background: var(--navy); }
+.servicos-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+  margin-top: 3rem;
+}
+.servicos-desc {
+  font-size: .95rem;
+  color: var(--white-50);
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+.servicos-frentes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.frente-card {
+  background: var(--navy2);
+  border: 1px solid var(--gold-line);
+  padding: 1.25rem;
+  border-radius: 2px;
+  transition: border-color .2s, background .2s;
+}
+.frente-card:hover { border-color: var(--gold); background: rgba(201,168,76,.06); }
+.frente-icon {
+  width: 32px; height: 32px;
+  margin-bottom: .75rem;
+}
+.frente-icon svg { width: 32px; height: 32px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+.frente-title { font-weight: 600; font-size: .88rem; margin-bottom: .3rem; }
+.frente-body { font-size: .78rem; color: var(--white-50); line-height: 1.6; }
+ 
+/* ============================================================
+   PROCESSO
+   ============================================================ */
+.processo { background: var(--black); }
+.processo-timeline { margin-top: 3rem; display: flex; flex-direction: column; gap: 0; }
+.processo-step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1.5rem;
+  position: relative;
+}
+.processo-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 27px; top: 48px;
+  width: 1px;
+  bottom: 0;
+  background: var(--gold-line);
+}
+.step-num-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: .25rem;
+}
+.step-num {
+  width: 44px; height: 44px;
+  border: 1px solid var(--gold-line);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--gold);
+  background: var(--black);
+  flex-shrink: 0;
+  z-index: 1;
+}
+.step-content { padding: 0 0 3rem; }
+.step-title { font-weight: 600; font-size: 1rem; margin-bottom: .4rem; padding-top: .6rem; }
+.step-body { font-size: .88rem; color: var(--white-50); line-height: 1.7; }
+.step-deliverable {
+  display: inline-flex; align-items: center; gap: .4rem;
+  margin-top: .75rem;
+  font-size: .72rem;
+  font-family: var(--font-mono);
+  color: var(--gold);
+  letter-spacing: .08em;
+  border: 1px solid var(--gold-line);
+  padding: .25rem .7rem;
+  border-radius: 2px;
+}
+ 
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq { background: var(--navy); }
+.faq-list { margin-top: 3rem; display: flex; flex-direction: column; }
+.faq-item {
+  border-bottom: 1px solid var(--white-08);
+}
+.faq-q {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem 0;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: .95rem;
+  gap: 1rem;
+  transition: color .2s;
+}
+.faq-q:hover { color: var(--gold); }
+.faq-icon {
+  width: 24px; height: 24px;
+  border: 1px solid var(--white-20);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+  color: var(--gold);
+  transition: transform .3s, border-color .2s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--gold); }
+.faq-a {
+  font-size: .9rem;
+  color: var(--white-50);
+  line-height: 1.8;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s var(--ease), padding .4s;
+  padding-bottom: 0;
+  text-wrap: pretty;
+}
+.faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.5rem; }
+ 
+/* ============================================================
+   CTA FINAL
+   ============================================================ */
+.cta-final {
+  background: var(--black);
+  text-align: center;
+  padding: 8rem 6%;
+  position: relative;
+  overflow: hidden;
+}
+.cta-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(201,168,76,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-final-inner { position: relative; z-index: 1; }
+.cta-final h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  text-wrap: balance;
+  margin-bottom: 1.25rem;
+}
+.cta-final p {
+  font-size: 1.05rem;
+  color: var(--white-50);
+  max-width: 500px;
+  margin: 0 auto 2.5rem;
+  text-wrap: pretty;
+}
+.cta-final-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.cta-note {
+  margin-top: 1.5rem;
+  font-size: .78rem;
+  color: var(--white-20);
+  letter-spacing: .06em;
+}
+ 
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--navy);
+  border-top: 1px solid var(--gold-line);
+  padding: 3rem 6%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: center;
+}
+.footer-logo { display: flex; align-items: center; margin-bottom: .4rem; }
+.footer-logo svg { display: block; }
+.footer-logo span { color: var(--gold); }
+.footer-tagline { font-size: .78rem; color: var(--white-50); letter-spacing: .08em; }
+.footer-links {
+  display: flex; gap: 2rem;
+  list-style: none;
+}
+.footer-links a {
+  font-size: .75rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--white-50);
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-copy {
+  grid-column: 1 / -1;
+  font-size: .72rem;
+  color: var(--white-20);
+  border-top: 1px solid var(--white-08);
+  padding-top: 1.5rem;
+  margin-top: .5rem;
+}
+ 
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 960px) {
+  .hero-inner, .tese-inner, .ba-grid,
+  .servicos-inner, .antes-depois { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .args-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  footer { grid-template-columns: 1fr; }
+  .footer-links { flex-wrap: wrap; }
+}
+@media (max-width: 600px) {
+  section { padding: 4rem 5%; }
+  .hero { padding: 7rem 5% 4rem; }
+  .hero-kpis { flex-direction: column; gap: 1.5rem; }
+}
+</style>
 </head>
-
 <body>
-
-<header>
-    <h1>João Paulo Sousa</h1>
-    <p>Desenvolvedor em formação | Dados | Finanças</p>
-</header>
-
-<section>
-    <h2>Minhas Habilidades</h2>
-    <ul>
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>JavaScript (básico)</li>
-        <li>SQL</li>
-        <li>Power BI</li>
-    </ul>
-</section>
-
-<section>
-    <h2>Sobre Mim</h2>
-    <p>
-        Sou apaixonado por tecnologia, dados e desenvolvimento. 
-        Atualmente estou em transição de carreira para a área tech, 
-        buscando evoluir constantemente e criar soluções reais.
-    </p>
-</section>
-
-<section>
-    <h2>Contato</h2>
-    <form>
-        <div>
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" required>
+ 
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg width="100" height="36" viewBox="0 0 110 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ng1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#F5DFA0"/>
+          <stop offset="45%" stop-color="#C9A84C"/>
+          <stop offset="100%" stop-color="#E2C166"/>
+        </linearGradient>
+      </defs>
+      <text x="2" y="28" font-family="Cormorant Garamond, serif" font-size="22" font-weight="700" letter-spacing="5" fill="url(#ng1)">NEXIA</text>
+    </svg>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="https://instagram.com/nexia" class="nav-cta">Falar com a Nexia</a>
+</nav>
+ 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-chip reveal">
+        <span class="hero-chip-dot"></span>
+        Marketing · Tráfego · Automação
+      </div>
+      <h1 class="reveal reveal-delay-1">
+        Seu negócio não precisa de<br>
+        <span class="strike">mais seguidores.</span><br>
+        Precisa de <span class="shine">clientes reais</span><br>chegando todo dia.
+      </h1>
+      <p class="hero-lede reveal reveal-delay-2">
+        A presença digital que seu negócio merece, com resultado visível em dias. Google Perfil, tráfego pago e automação inteligente trabalhando juntos pelo seu crescimento.
+      </p>
+      <div class="hero-ctas reveal reveal-delay-3">
+        <a href="https://instagram.com/nexia" class="btn-gold">Quero resultado agora</a>
+        <a href="#servicos" class="btn-outline">Ver serviços</a>
+      </div>
+    </div>
+    <div class="hero-visual reveal reveal-delay-2">
+      <div class="hero-orb">
+        <div class="orb-ring">
+          <div class="orb-dot"></div>
+          <div class="orb-dot"></div>
+          <div class="orb-dot"></div>
+          <div class="orb-dot"></div>
         </div>
-
-        <div>
-            <label for="email">E-mail</label>
-            <input type="email" id="email" required>
+        <div class="orb-ring"></div>
+        <div class="orb-ring"></div>
+        <div class="orb-center">
+          <svg width="100" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="og1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#F5DFA0"/>
+                <stop offset="45%" stop-color="#C9A84C"/>
+                <stop offset="100%" stop-color="#E2C166"/>
+              </linearGradient>
+            </defs>
+            <text x="2" y="26" font-family="Cormorant Garamond, serif" font-size="24" font-weight="700" letter-spacing="5" fill="url(#og1)">NEXIA</text>
+          </svg>
+          <div class="orb-tagline">A Próxima Era<br>da Inteligência</div>
         </div>
-
-        <div>
-            <label for="mensagem">Mensagem</label>
-            <textarea id="mensagem" rows="4" required></textarea>
-        </div>
-
-        <button type="submit">Enviar</button>
-    </form>
+      </div>
+    </div>
+  </div>
 </section>
-
+ 
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marquee">
+    <div class="marquee-item">Google Perfil <span class="dot"></span></div>
+    <div class="marquee-item">Tráfego Pago <span class="dot"></span></div>
+    <div class="marquee-item">Automação N8N <span class="dot"></span></div>
+    <div class="marquee-item">Meta Ads <span class="dot"></span></div>
+    <div class="marquee-item">Google Ads <span class="dot"></span></div>
+    <div class="marquee-item">WhatsApp Bot <span class="dot"></span></div>
+    <div class="marquee-item">SEO Local <span class="dot"></span></div>
+    <div class="marquee-item">Captação de Leads <span class="dot"></span></div>
+    <div class="marquee-item">Landing Pages <span class="dot"></span></div>
+    <div class="marquee-item">Gestão de Avaliações <span class="dot"></span></div>
+    <div class="marquee-item">Remarketing <span class="dot"></span></div>
+    <div class="marquee-item">Agentes de IA <span class="dot"></span></div>
+    <div class="marquee-item">Google Perfil <span class="dot"></span></div>
+    <div class="marquee-item">Tráfego Pago <span class="dot"></span></div>
+    <div class="marquee-item">Automação N8N <span class="dot"></span></div>
+    <div class="marquee-item">Meta Ads <span class="dot"></span></div>
+    <div class="marquee-item">Google Ads <span class="dot"></span></div>
+    <div class="marquee-item">WhatsApp Bot <span class="dot"></span></div>
+    <div class="marquee-item">SEO Local <span class="dot"></span></div>
+    <div class="marquee-item">Captação de Leads <span class="dot"></span></div>
+    <div class="marquee-item">Landing Pages <span class="dot"></span></div>
+    <div class="marquee-item">Gestão de Avaliações <span class="dot"></span></div>
+    <div class="marquee-item">Remarketing <span class="dot"></span></div>
+    <div class="marquee-item">Agentes de IA <span class="dot"></span></div>
+  </div>
+</div>
+ 
+<!-- TESE -->
+<section class="tese">
+  <div class="tese-inner">
+    <div>
+      <p class="section-eyebrow reveal">O problema real</p>
+      <h2 class="section-h2 reveal reveal-delay-1">A maioria dos negócios está <span class="gold">invisível</span> para quem mais importa.</h2>
+      <div class="tese-points">
+        <div class="tese-point reveal reveal-delay-1">
+          <span class="tese-point-num">01</span>
+          <div>
+            <div class="tese-point-title">Você não aparece onde o cliente decide</div>
+            <div class="tese-point-body">87% das decisões de compra local começam no Google. Se você não está lá, está perdendo para o concorrente que está.</div>
+          </div>
+        </div>
+        <div class="tese-point reveal reveal-delay-2">
+          <span class="tese-point-num">02</span>
+          <div>
+            <div class="tese-point-title">Leads que chegam, somem sem resposta</div>
+            <div class="tese-point-body">Sem automação, leads esfriados em minutos viram clientes do concorrente. Velocidade de resposta define quem fecha.</div>
+          </div>
+        </div>
+        <div class="tese-point reveal reveal-delay-3">
+          <span class="tese-point-num">03</span>
+          <div>
+            <div class="tese-point-title">Investimento em anúncio sem estratégia é dinheiro queimado</div>
+            <div class="tese-point-body">Tráfego pago sem estrutura de conversão gera cliques, não clientes. A Nexia integra as três camadas para que cada real investido retorne.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tese-chart reveal reveal-delay-2">
+      <div class="chart-title">Visibilidade local · Antes vs Depois da Nexia</div>
+      <svg class="chart-svg" viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gAfter" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#C9A84C" stop-opacity=".4"/>
+            <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="gBefore" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity=".1"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <!-- grid lines -->
+        <line x1="0" y1="50" x2="360" y2="50" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+        <line x1="0" y1="100" x2="360" y2="100" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+        <line x1="0" y1="150" x2="360" y2="150" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+        <!-- before line -->
+        <polyline points="0,170 60,165 120,160 180,158 240,155 300,153 360,150"
+          fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2" stroke-dasharray="5,4"/>
+        <!-- after area -->
+        <polygon points="0,170 60,140 120,100 180,70 240,45 300,30 360,20 360,200 0,200"
+          fill="url(#gAfter)"/>
+        <!-- after line -->
+        <polyline points="0,170 60,140 120,100 180,70 240,45 300,30 360,20"
+          fill="none" stroke="#C9A84C" stroke-width="2.5"/>
+        <!-- dots -->
+        <circle cx="0" cy="170" r="4" fill="#C9A84C"/>
+        <circle cx="180" cy="70" r="4" fill="#C9A84C"/>
+        <circle cx="360" cy="20" r="5" fill="#C9A84C"/>
+        <!-- labels -->
+        <text x="8" y="195" font-size="10" fill="rgba(255,255,255,.3)" font-family="JetBrains Mono, monospace">Início</text>
+        <text x="315" y="195" font-size="10" fill="rgba(255,255,255,.3)" font-family="JetBrains Mono, monospace">30 dias</text>
+        <text x="270" y="18" font-size="10" fill="#C9A84C" font-family="JetBrains Mono, monospace">Com Nexia</text>
+        <text x="270" y="148" font-size="10" fill="rgba(255,255,255,.4)" font-family="JetBrains Mono, monospace">Sem Nexia</text>
+      </svg>
+    </div>
+  </div>
+</section>
+ 
+<!-- ARGUMENTS -->
+<section class="args">
+  <p class="section-eyebrow reveal">Por que a Nexia</p>
+  <h2 class="section-h2 reveal reveal-delay-1">Seis razões para parar de perder <span class="gold">clientes para o concorrente.</span></h2>
+  <div class="args-grid">
+    <div class="arg-card reveal">
+      <div class="arg-num">01</div>
+      <div class="arg-headline">Resultado em dias, não meses</div>
+      <div class="arg-lede">Sem esperar seis meses para ver algum retorno.</div>
+      <div class="arg-body">Com Google Perfil otimizado, seu negócio começa a aparecer nas buscas locais em menos de uma semana. Resultado mensurável, rápido e sem investimento em anúncio.</div>
+      <div class="arg-stat gold">7 dias</div>
+      <div class="arg-stat-label">para os primeiros resultados visíveis</div>
+    </div>
+    <div class="arg-card reveal reveal-delay-1">
+      <div class="arg-num">02</div>
+      <div class="arg-headline">Visibilidade orgânica gratuita</div>
+      <div class="arg-lede">Aparecer no Google sem pagar por clique.</div>
+      <div class="arg-body">Negócios bem otimizados no Google Perfil recebem centenas de visualizações por mês de forma orgânica. Um ativo que cresce enquanto você dorme.</div>
+      <div class="arg-stat gold">R$ 0</div>
+      <div class="arg-stat-label">investido em anúncio para os primeiros clientes</div>
+    </div>
+    <div class="arg-card reveal reveal-delay-2">
+      <div class="arg-num">03</div>
+      <div class="arg-headline">Nenhum lead perdido por demora</div>
+      <div class="arg-lede">O bot responde em segundos. Você fecha depois.</div>
+      <div class="arg-body">Com automação de WhatsApp via N8N, cada lead é qualificado automaticamente, recebe resposta imediata e é encaminhado para agendamento sem você tocar em nada.</div>
+      <div class="arg-stat gold">&lt; 60s</div>
+      <div class="arg-stat-label">tempo de resposta automatizada ao lead</div>
+    </div>
+    <div class="arg-card reveal">
+      <div class="arg-num">04</div>
+      <div class="arg-headline">Anúncios que convertem de verdade</div>
+      <div class="arg-lede">Não só cliques. Clientes.</div>
+      <div class="arg-body">Meta Ads e Google Ads com estratégia de funil completo: da segmentação à landing page. Cada campanha é acompanhada, otimizada e reportada quinzenalmente.</div>
+      <div class="arg-stat gold">3×</div>
+      <div class="arg-stat-label">mais conversões com estratégia integrada</div>
+    </div>
+    <div class="arg-card reveal reveal-delay-1">
+      <div class="arg-num">05</div>
+      <div class="arg-headline">Conteúdo sem esforço do seu lado</div>
+      <div class="arg-lede">IA gerando e postando por você.</div>
+      <div class="arg-body">Com o time de agentes de IA da Nexia, seu perfil recebe postagens frequentes e relevantes sem você precisar escrever uma linha. Autoridade construída no piloto automático.</div>
+      <div class="arg-stat gold">30</div>
+      <div class="arg-stat-label">posts por mês gerados automaticamente</div>
+    </div>
+    <div class="arg-card reveal reveal-delay-2">
+      <div class="arg-num">06</div>
+      <div class="arg-headline">Estratégia integrada, não isolada</div>
+      <div class="arg-lede">Tudo conectado, tudo medido.</div>
+      <div class="arg-body">Google Perfil, tráfego pago e automação funcionando juntos. O lead que vem do anúncio é nutrido pela automação e encontra uma presença sólida no Google. Sistema completo.</div>
+      <div class="arg-stat gold">1</div>
+      <div class="arg-stat-label">parceiro para todas as frentes digitais</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- PULL BAND -->
+<div class="pull-band reveal">
+  <p>"Você investe em anúncio. Seu concorrente não gasta nada e aparece antes de você no Google."</p>
+</div>
+ 
+<!-- WHY NOW -->
+<section class="why-now">
+  <p class="section-eyebrow reveal">Por que agora</p>
+  <h2 class="section-h2 reveal reveal-delay-1">Cada dia sem presença local é um cliente que o <span class="gold">concorrente está fechando.</span></h2>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Concorrência crescendo online</h3>
+      <p>Mais de 70% dos negócios locais aumentaram investimento digital em 2024. Quem não acompanha, fica para trás e recuperar terreno custa muito mais caro.</p>
+    </div>
+    <div class="why-card reveal reveal-delay-1">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>Decisão de compra acontece no Google</h3>
+      <p>O cliente pesquisa antes de sair de casa. Se sua ficha estiver incompleta, sem avaliações e sem fotos, ele vai para o concorrente que aparece melhor mesmo que você seja mais qualificado.</p>
+    </div>
+    <div class="why-card reveal reveal-delay-2">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>Automação como vantagem competitiva</h3>
+      <p>Negócios que respondem leads em menos de 5 minutos têm 9× mais chance de conversão. Automação deixou de ser diferencial e virou necessidade básica de sobrevivência.</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- BEFORE / AFTER -->
+<section class="before-after">
+  <p class="section-eyebrow reveal">Transformação real</p>
+  <h2 class="section-h2 reveal reveal-delay-1">O antes e o depois de quem <span class="gold">trabalha com a Nexia.</span></h2>
+  <div class="ba-grid">
+    <div class="ba-col before reveal">
+      <h3>Sem a Nexia</h3>
+      <div class="ba-bar-wrap">
+        <div>
+          <div class="ba-bar-label"><span>Visibilidade no Google</span><span>12%</span></div>
+          <div class="ba-bar-track"><div class="ba-bar-fill" data-width="12"></div></div>
+        </div>
+        <div>
+          <div class="ba-bar-label"><span>Taxa de resposta a leads</span><span>25%</span></div>
+          <div class="ba-bar-track"><div class="ba-bar-fill" data-width="25"></div></div>
+        </div>
+        <div>
+          <div class="ba-bar-label"><span>Conversão de contatos</span><span>15%</span></div>
+          <div class="ba-bar-track"><div class="ba-bar-fill" data-width="15"></div></div>
+        </div>
+        <div>
+          <div class="ba-bar-label"><span>Presença digital ativa</span><span>20%</span></div>
+          <div class="ba-bar-track"><div class="ba-bar-fill" data-width="20"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ba-col after reveal reveal-delay-1">
+      <h3>Com a Nexia</h3>
+      <div class="ba-bar-wrap">
+        <div>
+          <div class="ba-bar-label"><span>Visibilidade no Google</span><span>89%</span></div>
+          <div class="ba-bar-track"><div class="ba-bar-fill" data-width="89"></div></div>
+        </div>
+        <div>
+          <div class="ba-bar-label"><span>Taxa de resposta a leads</span><span>100%</span></div>
+          <div class="ba-bar-track"><div class="ba-bar-fill" data-width="100"></div></div>
+        </div>
+        <div>
+          <div class="ba-bar-label"><span>Conversão de contatos</span><span>60%</span></div>
+          <div class="ba-bar-track"><div class="ba-bar-fill" data-width="60"></div></div>
+        </div>
+        <div>
+          <div class="ba-bar-label"><span>Presença digital ativa</span><span>95%</span></div>
+          <div class="ba-bar-track"><div class="ba-bar-fill" data-width="95"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- SERVICOS -->
+<section class="servicos" id="servicos">
+  <p class="section-eyebrow reveal">O que entregamos</p>
+  <h2 class="section-h2 reveal reveal-delay-1">Três frentes.<br><span class="gold">Um único objetivo.</span></h2>
+  <div class="servicos-inner">
+    <div>
+      <p class="servicos-desc reveal reveal-delay-1">
+        Cada serviço da Nexia pode ser contratado de forma independente. Você começa pelo que faz mais sentido para o seu momento e, conforme os resultados aparecem, a gente expande juntos para as próximas frentes.
+      </p>
+      <p class="servicos-desc reveal reveal-delay-2" style="margin-top:1rem">
+        Começar por um serviço é o caminho mais inteligente: resultado rápido, investimento controlado e crescimento progressivo sem pressão.
+      </p>
+    </div>
+    <div class="servicos-frentes">
+      <div class="frente-card reveal">
+        <div class="frente-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="frente-title">Google Perfil</div>
+        <div class="frente-body">Setup, otimização, SEO local, postagens semanais e gestão de avaliações.</div>
+      </div>
+      <div class="frente-card reveal reveal-delay-1">
+        <div class="frente-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="frente-title">Tráfego Pago</div>
+        <div class="frente-body">Meta Ads, Google Ads, remarketing e campanhas para WhatsApp com foco em conversão.</div>
+      </div>
+      <div class="frente-card reveal reveal-delay-2">
+        <div class="frente-icon">
+          <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="frente-title">Automação N8N</div>
+        <div class="frente-body">Fluxos de WhatsApp, qualificação de leads, agendamento automático e follow-up inteligente.</div>
+      </div>
+      <div class="frente-card reveal reveal-delay-3">
+        <div class="frente-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="frente-title">Conteúdo com IA</div>
+        <div class="frente-body">Posts, carrosséis e stories gerados por agentes de IA e publicados automaticamente.</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- PROCESSO -->
+<section class="processo" id="processo">
+  <p class="section-eyebrow reveal">Como funciona</p>
+  <h2 class="section-h2 reveal reveal-delay-1">Do primeiro contato ao <span class="gold">resultado mensurável.</span></h2>
+  <div class="processo-timeline">
+    <div class="processo-step reveal">
+      <div class="step-num-wrap"><div class="step-num">01</div></div>
+      <div class="step-content">
+        <div class="step-title">Diagnóstico do negócio</div>
+        <div class="step-body">Conversa de 30 minutos para entender seu negócio, público, concorrência local e principais gargalos de captação. Sem custo e sem compromisso.</div>
+        <span class="step-deliverable">→ Mapa de oportunidades</span>
+      </div>
+    </div>
+    <div class="processo-step reveal reveal-delay-1">
+      <div class="step-num-wrap"><div class="step-num">02</div></div>
+      <div class="step-content">
+        <div class="step-title">Proposta personalizada</div>
+        <div class="step-body">Com base no diagnóstico, montamos uma proposta com as frentes prioritárias, investimento claro e resultado esperado em 30 dias.</div>
+        <span class="step-deliverable">→ Proposta + cronograma</span>
+      </div>
+    </div>
+    <div class="processo-step reveal reveal-delay-2">
+      <div class="step-num-wrap"><div class="step-num">03</div></div>
+      <div class="step-content">
+        <div class="step-title">Setup e ativação</div>
+        <div class="step-body">Google Perfil otimizado, campanhas configuradas e automações ativas. Tudo estruturado nos primeiros 7 dias após o início.</div>
+        <span class="step-deliverable">→ Estrutura completa no ar</span>
+      </div>
+    </div>
+    <div class="processo-step reveal reveal-delay-3">
+      <div class="step-num-wrap"><div class="step-num">04</div></div>
+      <div class="step-content">
+        <div class="step-title">Monitoramento e otimização</div>
+        <div class="step-body">Acompanhamento contínuo de resultados, ajuste de campanhas e relatórios quinzenais com métricas reais: visualizações, leads e conversões.</div>
+        <span class="step-deliverable">→ Relatório quinzenal</span>
+      </div>
+    </div>
+    <div class="processo-step reveal reveal-delay-4">
+      <div class="step-num-wrap"><div class="step-num">05</div></div>
+      <div class="step-content">
+        <div class="step-title">Crescimento e escala</div>
+        <div class="step-body">Com a base funcionando, expandimos para novas frentes: mais plataformas de anúncio, automações mais complexas e conteúdo escalável com IA.</div>
+        <span class="step-deliverable">→ Plano de escala</span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <p class="section-eyebrow reveal">Dúvidas frequentes</p>
+  <h2 class="section-h2 reveal reveal-delay-1">Respostas diretas para as <span class="gold">perguntas mais comuns.</span></h2>
+  <div class="faq-list reveal reveal-delay-2">
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>Quanto tempo leva para ver resultado?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Com Google Perfil, os primeiros resultados aparecem em 7 a 14 dias. Tráfego pago gera leads desde a primeira semana de campanha ativa. Automação começa a funcionar no mesmo dia da ativação.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>O orçamento de anúncio está incluso no valor da Nexia?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Não. O valor da Nexia é a taxa de gestão e estratégia. O investimento em anúncio (Meta Ads, Google Ads) é pago diretamente por você à plataforma. Você tem total transparência sobre onde cada real está sendo investido.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>Funciona para negócio pequeno?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Sim, e especialmente bem. Pequenos negócios locais são os que mais se beneficiam do Google Perfil e da automação de WhatsApp, porque o investimento é baixo e o retorno é rápido e mensurável.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>Preciso ter conhecimento de marketing para trabalhar com vocês?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Zero. Você nos passa as informações do seu negócio e a gente cuida de tudo. Relatórios são simples e objetivos: quantos contatos chegaram, quantos viraram clientes, quanto foi investido.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>Como funciona o contrato?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Trabalhamos com contratos mensais sem multa de fidelidade. Acreditamos que você deve continuar porque está vendo resultado, não porque está preso em contrato. O setup inicial é pago uma vez e as mensalidades são recorrentes.</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- CTA FINAL -->
+<section class="cta-final" id="contato">
+  <div class="cta-glow"></div>
+  <div class="cta-final-inner">
+    <p class="section-eyebrow reveal" style="text-align:center">Próximo passo</p>
+    <h2 class="reveal reveal-delay-1">
+      Seu concorrente já está<br>
+      <span class="gold">aparecendo no Google.</span><br>
+      E você?
+    </h2>
+    <p class="reveal reveal-delay-2">Conversa rápida, sem compromisso. A gente entende seu negócio e mostra o que é possível em 30 dias.</p>
+    <div class="cta-final-ctas reveal reveal-delay-3">
+      <a href="https://instagram.com/nexia" class="btn-gold">Falar com a Nexia agora</a>
+      <a href="https://instagram.com/nexia" class="btn-outline">Manda um direct</a>
+    </div>
+    <p class="cta-note reveal reveal-delay-4">Sem custo · Sem compromisso · Resposta em até 24h</p>
+  </div>
+</section>
+ 
+<!-- FOOTER -->
 <footer>
-    <p>© 2024 João Paulo Sousa</p>
+  <div>
+    <div class="footer-logo">
+      <svg width="130" height="44" viewBox="0 0 130 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#F5DFA0"/>
+            <stop offset="45%" stop-color="#C9A84C"/>
+            <stop offset="100%" stop-color="#E2C166"/>
+          </linearGradient>
+        </defs>
+        <text x="2" y="34" font-family="Cormorant Garamond, serif" font-size="26" font-weight="700" letter-spacing="6" fill="url(#fg1)">NEXIA</text>
+      </svg>
+    </div>
+    <div class="footer-tagline">Marketing · Tráfego · Automação · © 2023 Nexia</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="https://instagram.com/nexia">Instagram</a></li>
+  </ul>
+  <div class="footer-copy">Nexia A Próxima Era da Inteligência Artificial aplicada ao marketing local.</div>
 </footer>
-
+ 
+<script>
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+ 
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+ 
+// Before/after bars
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.ba-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.ba-col').forEach(col => barObserver.observe(col));
+</script>
 </body>
 </html>
+ 
+
+
+
+
+
+
